@@ -86,5 +86,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_user_email3" />
 
+    <TextView
+        android:id="@+id/signin_red_link"
+        android:layout_width="89dp"
+        android:layout_height="34dp"
+        android:text="Sign in"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="664dp"
+        tools:layout_editospabsoluteX="166dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
