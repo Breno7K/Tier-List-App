@@ -1,5 +1,6 @@
 package com.example.tier_list_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -69,7 +70,8 @@ public class RegistryTierListActivity extends AppCompatActivity {
                 long result = dbHelper.atualizarTierList(tierList);
 
                 if (result != -1) {
-                   Toast.makeText(this, "Tier list updated successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Tier list updated successfully", Toast.LENGTH_SHORT).show();
+                    updateTierListInHomeActivity(tierList); // Update tier list in HomeActivity
                     finish();
                 } else {
                     Toast.makeText(this, "Failed to update tier list", Toast.LENGTH_SHORT).show();
@@ -86,5 +88,13 @@ public class RegistryTierListActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to save tier list. User not found: " + username, Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void updateTierListInHomeActivity(TierList updatedTierList) {
+        Intent intent = new Intent();
+        intent.putExtra("updated_tier_list", updatedTierList);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
 
 }
