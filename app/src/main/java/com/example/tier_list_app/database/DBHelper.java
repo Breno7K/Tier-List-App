@@ -98,7 +98,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(COL_NAME, user.getName());
             values.put(COL_EMAIL, user.getEmail());
             values.put(COL_USERNAME, user.getUsername());
-            values.put(COL_PASS, user.getSenha());
+            values.put(COL_PASS, user.getPassword());
             db.insertOrThrow(TABLE_USER, null, values);
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -134,14 +134,37 @@ public class DBHelper extends SQLiteOpenHelper {
         return senha;
     }
 
-    public long excluirUser(User user) {
-        long retornoBD;
-        db = this.getWritableDatabase();
-        String[] args = {String.valueOf(user.getId())};
-        retornoBD = db.delete(TABLE_USER, COL_ID + "=?", args);
 
-        return retornoBD;
+
+    public User buscarUser(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        User user = null;
+
+        String[] columnsUser = {COL_ID, COL_NAME, COL_EMAIL, COL_USERNAME, COL_PASS};
+        String selectionUser = COL_USERNAME + "=?";
+        String[] selectionArgs = {name};
+        Cursor cursor = db.query(TABLE_USER, columnsUser, selectionUser, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            User u = new User();
+            u.setId(cursor.getInt(0));
+            u.setUsername(cursor.getString(1));
+            u.setEmail(cursor.getString(2));
+            u.setPassword(cursor.getString(3));
+            ArrayList<TierList> tierLists = buscarTierLists(u);
+            u.setTierLists(tierLists);
+            return u;
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+
+        return user;
     }
+
 
     public long atualizarUser(User user) {
         long retornoBD;
@@ -150,7 +173,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(COL_NAME, user.getName());
         values.put(COL_EMAIL, user.getEmail());
         values.put(COL_USERNAME, user.getUsername());
-        values.put(COL_PASS, user.getSenha());
+        values.put(COL_PASS, user.getPassword());
         String[] args = {String.valueOf(user.getId()), "Maria", "teste"};
         retornoBD = db.update(TABLE_USER, values, "id=?", args);
         db.close();

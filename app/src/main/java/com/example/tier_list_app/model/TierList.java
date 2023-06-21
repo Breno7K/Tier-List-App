@@ -37,4 +37,9 @@ public class TierList implements Serializable{
     public void setTiers(ArrayList<Tier> tiers) {
         this.tiers = tiers;
     }
+
+    @Override
+    public String toString(){
+        return getName();
+    }
 }
