@@ -5,12 +5,21 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class TierList implements Serializable{
-    private String name;
-    private ArrayList<Item> itens;
 
-    public TierList(String name) {
-        this.name = name;
-        this.itens = new ArrayList<>();
+    private String username;
+    private String name;
+    private ArrayList<Tier> tiers;
+
+    int id;
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {
@@ -21,11 +30,11 @@ public class TierList implements Serializable{
         this.name = name;
     }
 
-    public ArrayList<Item> getItens() {
-        return itens;
+    public ArrayList<Tier> getTiers() {
+        return tiers;
     }
 
-    public void setItens(ArrayList<Item> itens) {
-        this.itens = itens;
+    public void setTiers(ArrayList<Tier> tiers) {
+        this.tiers = tiers;
     }
 }
