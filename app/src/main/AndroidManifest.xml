@@ -20,6 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.example.tier_list_app.SignUpUserActivity" />
+
+        <activity android:name="com.example.tier_list_app.HomeActivity" />
+
+        <activity android:name="com.example.tier_list_app.RegistryTierListActivity" />
+
+
     </application>
 
 </manifest>
