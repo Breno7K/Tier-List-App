@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "769696455846",
+    "project_id": "tier-list-app-6e7e1",
+    "storage_bucket": "tier-list-app-6e7e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769696455846:android:21e650ce0e8d66b24be867",
+        "android_client_info": {
+          "package_name": "com.example.tier_list_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769696455846-ar4hmebisqj1basv36uu56e0920en4tq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAisg5t6QBQrt-pJOnDiBVimau3yqqlMcU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769696455846-ar4hmebisqj1basv36uu56e0920en4tq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769696455846:android:711e701eed086a414be867",
+        "android_client_info": {
+          "package_name": "ufms.facom.tier_list_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769696455846-ar4hmebisqj1basv36uu56e0920en4tq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAisg5t6QBQrt-pJOnDiBVimau3yqqlMcU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769696455846-ar4hmebisqj1basv36uu56e0920en4tq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
