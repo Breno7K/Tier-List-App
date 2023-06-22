@@ -24,7 +24,7 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
     @NonNull
     @Override
     public TierViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tier, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tier_level_list, parent, false);
         return new TierViewHolder(view);
     }
 

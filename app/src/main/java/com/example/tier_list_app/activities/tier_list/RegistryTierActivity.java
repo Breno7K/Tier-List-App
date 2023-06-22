@@ -25,7 +25,7 @@ public class RegistryTierActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registy_tier);
+        setContentView(R.layout.tier_level_registry);
 
         dbHelper = new DBHelper(this);
         edtName = findViewById(R.id.edtName);

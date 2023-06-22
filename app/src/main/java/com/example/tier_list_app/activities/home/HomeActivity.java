@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.tier_list_list_view);
 
         txtNome = findViewById(R.id.txtNome);
         listTierLists = findViewById(R.id.listTierLists);
@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent) {
                         if (convertView == null) {
-                            convertView = getLayoutInflater().inflate(R.layout.list_item_tier, null);
+                            convertView = getLayoutInflater().inflate(R.layout.tier_list_list, null);
                         }
 
                         TextView textView = convertView.findViewById(R.id.textViewTier);
