@@ -1,7 +1,6 @@
-package com.example.tier_list_app;
+package com.example.tier_list_app.activities.auth;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tier_list_app.R;
 import com.example.tier_list_app.database.DBHelper;
 import com.example.tier_list_app.model.User;
 

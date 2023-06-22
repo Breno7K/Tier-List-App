@@ -1,4 +1,4 @@
-package com.example.tier_list_app;
+package com.example.tier_list_app.activities.tier_list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,13 +9,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tier_list_app.R;
 import com.example.tier_list_app.database.DBHelper;
 import com.example.tier_list_app.model.Tier;
 import com.example.tier_list_app.model.TierList;
 
 import java.util.List;
 
-public class TierListActivity extends AppCompatActivity {
+public class TierListViewActivity extends AppCompatActivity {
 
     private RecyclerView tierListRecyclerView;
     private TierListAdapter tierListAdapter;
@@ -54,7 +55,7 @@ public class TierListActivity extends AppCompatActivity {
         btnCreateTier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TierListActivity.this, RegistryTierActivity.class);
+                Intent intent = new Intent(TierListViewActivity.this, RegistryTierActivity.class);
                 intent.putExtra("chave_tier_list_id", tierListId);
                 intent.putExtra("chave_usuario", username);
                 startActivity(intent);
@@ -66,7 +67,7 @@ public class TierListActivity extends AppCompatActivity {
         btnCreateTier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TierListActivity.this, RegistryTierActivity.class);
+                Intent intent = new Intent(TierListViewActivity.this, RegistryTierActivity.class);
                 intent.putExtra("chave_tier_list_id", tierListId);
                 intent.putExtra("chave_usuario", username);
                 startActivity(intent);

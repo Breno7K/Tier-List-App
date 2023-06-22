@@ -1,4 +1,4 @@
-package com.example.tier_list_app;
+package com.example.tier_list_app.activities.tier_list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tier_list_app.R;
 import com.example.tier_list_app.database.DBHelper;
 import com.example.tier_list_app.model.Tier;
 import com.example.tier_list_app.model.TierList;

@@ -12,7 +12,7 @@
         android:theme="@style/Theme.TierListApp"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.auth.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,15 +21,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.tier_list_app.SignUpUserActivity" />
+        <activity android:name="com.example.tier_list_app.activities.auth.SignUpUserActivity" />
 
-        <activity android:name="com.example.tier_list_app.HomeActivity" />
+        <activity android:name="com.example.tier_list_app.activities.home.HomeActivity" />
 
-        <activity android:name="com.example.tier_list_app.RegistryTierListActivity" />
+        <activity android:name="com.example.tier_list_app.activities.tier_list.RegistryTierListActivity" />
 
-        <activity android:name="com.example.tier_list_app.RegistryTierActivity" />
+        <activity android:name="com.example.tier_list_app.activities.tier_list.RegistryTierActivity" />
 
-        <activity android:name="com.example.tier_list_app.TierListActivity" />
+        <activity android:name="com.example.tier_list_app.activities.tier_list.TierListViewActivity" />
 
 
 
