@@ -15,6 +15,7 @@ import com.example.tier_list_app.model.TierList;
 import com.example.tier_list_app.model.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String TAG = DBHelper.class.getName();
@@ -44,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TABLE_CREATE_USER = "CREATE TABLE " + TABLE_USER +
             "(" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COL_NAME + " TEXT NOT NULL, " + COL_EMAIL + " TEXT NOT NULL, " +
-            COL_USERNAME + " TEXT NOT NULL, " + COL_PASS + " TEXT NOT NULL);";
+            COL_USERNAME + " TEXT UNIQUE, " + COL_PASS + " TEXT NOT NULL);";
 
     private static final String TABLE_CREATE_TIER_LIST = "CREATE TABLE " + TABLE_TIER_LIST +
             "(" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -215,26 +216,78 @@ public class DBHelper extends SQLiteOpenHelper {
         return tierLists;
     }
 
+    public TierList buscarTierList(int idTierList) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        TierList tierList = null;
+
+        String[] columns = {COL_ID, COL_USER_USERNAME,COL_NAME};
+        String selection = COL_ID + "=?";
+        String[] selectionArgs = {String.valueOf(idTierList)};
+        Cursor cursor = db.query(TABLE_TIER_LIST, columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            TierList tl = new TierList();
+            tl.setId(cursor.getInt(0));
+            tl.setUsername(cursor.getString(1));
+            tl.setName(cursor.getString(2));
+            return tl;
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+
+        return tierList;
+    }
+
+    public TierList buscarTierListByName(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        TierList tierList = null;
+
+        String[] columns = {COL_ID, COL_USER_USERNAME, COL_NAME};
+        String selection = COL_NAME + "=?";
+        String[] selectionArgs = {name};
+        Cursor cursor = db.query(TABLE_TIER_LIST, columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            TierList tl = new TierList();
+            tl.setId(cursor.getInt(0));
+            tl.setUsername(cursor.getString(1));
+            tl.setName(cursor.getString(2));
+            return tl;
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+
+        return tierList;
+    }
+
     public long excluirTierList(TierList tl) {
         long retornoBD;
-        db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         String[] args = {String.valueOf(tl.getId())};
-        retornoBD=db.delete(TABLE_TIER_LIST, COL_ID+"=?",args);
-
+        retornoBD = db.delete(TABLE_TIER_LIST, COL_ID + "=?", args);
         return retornoBD;
     }
 
-    public long atualizarTierList(TierList tl){
+    public long atualizarTierList(TierList tl) {
         long retornoBD;
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_NAME,tl.getName());
-        values.put(COL_USER_USERNAME, tl.getUsername());
-        String[] args = {String.valueOf(tl.getId())};
-        retornoBD=db.update(TABLE_TIER_LIST,values,"id=?",args);
+        values.put(COL_NAME, tl.getName());
+        String[] args = { String.valueOf(tl.getId()) };
+        retornoBD = db.update(TABLE_TIER_LIST, values, COL_ID + "=?", args);
         db.close();
         return retornoBD;
     }
+
+
 
     public void insereTier(TierList tierList, Tier tier) {
         db = this.getWritableDatabase();
@@ -242,25 +295,30 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ContentValues values = new ContentValues();
             values.put(COL_NAME, tier.getName());
-            values.put(COL_TIER_LIST_NAME, tierList.getUsername());
+            values.put(COL_TIER_LIST_NAME, tierList.getName());
             db.insertOrThrow(TABLE_TIER, null, values);
             db.setTransactionSuccessful();
         } catch (Exception e) {
-            Log.e(TAG, "Error while trying to add tier list to database");
+            Log.e(TAG, "Error while trying to add tier to database", e);
+
         } finally {
             db.endTransaction();
         }
     }
 
-    public ArrayList<Tier> buscarTiers(TierList tierList) {
-        String[] columns = {COL_ID, COL_TIER_LIST_NAME,COL_NAME};
+    public List<Tier> buscarTiers(TierList tierList) {
+        if (tierList == null) {
+            return new ArrayList<>();
+        }
+
+        String[] columns = {COL_ID, COL_TIER_LIST_NAME, COL_NAME};
         String selection = COL_TIER_LIST_NAME + " = ?";
         String[] selectionArgs = {tierList.getName()};
         Cursor cursor = getReadableDatabase().query(TABLE_TIER,
                 columns, selection, selectionArgs, null,
                 null, null, null);
 
-        ArrayList<Tier> tiers = new ArrayList<>();
+        List<Tier> tiers = new ArrayList<>();
         while (cursor.moveToNext()) {
             Tier tl = new Tier();
             tl.setId(cursor.getInt(0));
@@ -268,8 +326,11 @@ public class DBHelper extends SQLiteOpenHelper {
             tl.setName(cursor.getString(2));
             tiers.add(tl);
         }
+
+        cursor.close();
         return tiers;
     }
+
 
     public long excluirTier(Tier t) {
         long retornoBD;
@@ -348,5 +409,29 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return retornoBD;
     }
+
+    public List<Tier> buscarTiersByTierListName(String tierListName) {
+
+        String[] columns = {COL_ID, COL_TIER_LIST_NAME, COL_NAME};
+        String selection = COL_TIER_LIST_NAME + " = ?";
+        String[] selectionArgs = {tierListName};
+        Cursor cursor = getReadableDatabase().query(TABLE_TIER,
+                columns, selection, selectionArgs, null,
+                null, null, null);
+
+        List<Tier> tiers = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Tier tl = new Tier();
+            tl.setId(cursor.getInt(0));
+            tl.setTierlistName(cursor.getString(1));
+            tl.setName(cursor.getString(2));
+            tiers.add(tl);
+        }
+
+        cursor.close();
+        return tiers;
+    }
+
+
 
 }

@@ -27,8 +27,9 @@ public class RegistryTierListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registy_tier_list);
 
         dbHelper = new DBHelper(this);
-
+        String tier_list_name = getIntent().getStringExtra("tier_list_name");
         edtName = findViewById(R.id.edtName);
+        edtName.setText(tier_list_name);
         btnSalvar = findViewById(R.id.btnSalvar);
         btnCancel = findViewById(R.id.btnCancelar);
 
@@ -61,28 +62,34 @@ public class RegistryTierListActivity extends AppCompatActivity {
 
         User user = dbHelper.buscarUser(username);
         if (user != null) {
-            if (tierListId != -1 && btnSalvar.getText().toString().equals("ALTERAR")) {
-                TierList tierList = new TierList();
-                tierList.setId(tierListId);
-                tierList.setName(name);
-                tierList.setUsername(username);
+            TierList existingTierList = dbHelper.buscarTierListByName(name);
 
-                long result = dbHelper.atualizarTierList(tierList);
-
-                if (result != -1) {
-                    Toast.makeText(this, "Tier list updated successfully", Toast.LENGTH_SHORT).show();
-                    updateTierListInHomeActivity(tierList); // Update tier list in HomeActivity
-                    finish();
-                } else {
-                    Toast.makeText(this, "Failed to update tier list", Toast.LENGTH_SHORT).show();
-                }
+            if (existingTierList != null && tierListId == -1) {
+                Toast.makeText(this, "A TierList with the same name already exists", Toast.LENGTH_SHORT).show();
             } else {
-                TierList tierList = new TierList();
-                tierList.setName(name);
-                dbHelper.insereTierList(user, tierList);
+                if (tierListId != -1 && btnSalvar.getText().toString().equals("ALTERAR")) {
+                    TierList tierList = new TierList();
+                    tierList.setId(tierListId);
+                    tierList.setName(name);
+                    tierList.setUsername(username);
 
-                Toast.makeText(this, "Tier list saved successfully", Toast.LENGTH_SHORT).show();
-                finish();
+                    long result = dbHelper.atualizarTierList(tierList);
+
+                    if (result != -1) {
+                        Toast.makeText(this, "Tier list updated successfully", Toast.LENGTH_SHORT).show();
+                        updateTierListInHomeActivity(tierList);
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Failed to update tier list", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    TierList tierList = new TierList();
+                    tierList.setName(name);
+                    dbHelper.insereTierList(user, tierList);
+
+                    Toast.makeText(this, "Tier list saved successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         } else {
             Toast.makeText(this, "Failed to save tier list. User not found: " + username, Toast.LENGTH_SHORT).show();

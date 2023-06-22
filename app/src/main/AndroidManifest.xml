@@ -27,6 +27,11 @@
 
         <activity android:name="com.example.tier_list_app.RegistryTierListActivity" />
 
+        <activity android:name="com.example.tier_list_app.RegistryTierActivity" />
+
+        <activity android:name="com.example.tier_list_app.TierListActivity" />
+
+
 
     </application>
 
