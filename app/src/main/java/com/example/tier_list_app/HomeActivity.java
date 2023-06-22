@@ -1,12 +1,8 @@
 package com.example.tier_list_app;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +13,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.tier_list_app.database.DBHelper;
 import com.example.tier_list_app.model.TierList;
 import com.example.tier_list_app.model.User;
@@ -25,7 +23,7 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private static final int EDIT_TIER_LIST_REQUEST = 1;
+    private static final int REQUEST_CODE_TIER_LIST = 1;
 
     private TextView txtNome;
     private ListView listTierLists;
@@ -41,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         txtNome = findViewById(R.id.txtNome);
-        listTierLists = findViewById(R.id.listContatos);
+        listTierLists = findViewById(R.id.listTierLists);
 
         registerForContextMenu(listTierLists);
 
@@ -52,35 +50,29 @@ public class HomeActivity extends AppCompatActivity {
             fillList(name);
         }
 
-        listTierLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                TierList tierListEnviada = arrayAdapterTierList.getItem(position);
-                Intent intent = new Intent(HomeActivity.this, RegistryTierListActivity.class);
-                intent.putExtra("chave_usuario", txtNome.getText().toString().replace("Bem vindo ", ""));
-                intent.putExtra("chave_tier_list_id", tierListEnviada.getId());
-                startActivity(intent);
-            }
-        });
-
-        listTierLists.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                tierList = arrayAdapterTierList.getItem(position);
-                return false;
-            }
-        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == EDIT_TIER_LIST_REQUEST && resultCode == RESULT_OK) {
-            String name = txtNome.getText().toString().replace("Bem vindo ", "");
-            fillList(name);
+        if (requestCode == REQUEST_CODE_TIER_LIST) {
+            if (resultCode == RESULT_OK) {
+                // Refresh the tier list in the HomeActivity
+                String username = getIntent().getStringExtra("chave_usuario");
+                fillList(username);
+            }
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Bundle args = getIntent().getExtras();
+        String name = args.getString("chave_usuario");
+        fillList(name);
+    }
+
 
     public void fillList(String name) {
         helper = new DBHelper(HomeActivity.this);
@@ -103,6 +95,18 @@ public class HomeActivity extends AppCompatActivity {
                         TextView textView = convertView.findViewById(R.id.textViewTier);
                         textView.setText(arrayListTierList.get(position).getName());
 
+                        convertView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                TierList selectedTierList = arrayListTierList.get(position);
+                                Intent intent = new Intent(HomeActivity.this, TierListActivity.class);
+                                intent.putExtra("chave_tier_list_id", selectedTierList.getId());
+                                intent.putExtra("tier_list_name", selectedTierList.getName());
+                                intent.putExtra("chave_usuario", selectedTierList.getUsername());
+                                startActivity(intent);
+                            }
+                        });
+
                         Button editButton = convertView.findViewById(R.id.buttonEdit);
                         Button deleteButton = convertView.findViewById(R.id.buttonDelete);
 
@@ -112,8 +116,9 @@ public class HomeActivity extends AppCompatActivity {
                                 TierList selectedTierList = arrayListTierList.get(position);
                                 Intent intent = new Intent(HomeActivity.this, RegistryTierListActivity.class);
                                 intent.putExtra("chave_tier_list_id", selectedTierList.getId());
+                                intent.putExtra("tier_list_name", selectedTierList.getName());
                                 intent.putExtra("chave_usuario", selectedTierList.getUsername());
-                                startActivityForResult(intent, EDIT_TIER_LIST_REQUEST);
+                                startActivity(intent);
                             }
                         });
 
@@ -123,7 +128,9 @@ public class HomeActivity extends AppCompatActivity {
                                 TierList selectedTierList = arrayListTierList.get(position);
                                 long rowsAffected = helper.excluirTierList(selectedTierList);
                                 if (rowsAffected != -1) {
-                                    fillList(name);
+                                    arrayListTierList.remove(position);
+                                    arrayAdapterTierList.notifyDataSetChanged();
+                                    Toast.makeText(HomeActivity.this, "Tier list deleted successfully", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(HomeActivity.this, "Failed to delete tier list", Toast.LENGTH_SHORT).show();
                                 }
@@ -141,11 +148,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+
     public void cadastrar(View view) {
         String name = getIntent().getStringExtra("chave_usuario");
         Intent intent = new Intent(HomeActivity.this, RegistryTierListActivity.class);
         intent.putExtra("chave_usuario", name);
-        startActivityForResult(intent, EDIT_TIER_LIST_REQUEST);
+        startActivity(intent);
     }
 
     @Override
