@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".MainActivity" android:gravity="center_vertical">
+    tools:context=".activities.auth.MainActivity" android:gravity="center_vertical">
     <EditText
         android:id="@+id/edtUsuario"
         android:layout_width="match_parent"

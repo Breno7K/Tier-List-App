@@ -1,4 +1,4 @@
-package com.example.tier_list_app;
+package com.example.tier_list_app.activities.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.tier_list_app.R;
-import com.example.tier_list_app.SignUpUserActivity;
+import com.example.tier_list_app.activities.home.HomeActivity;
 import com.example.tier_list_app.database.DBHelper;
 public class MainActivity extends AppCompatActivity {
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".RegistryTierListActivity">
+    tools:context=".activities.tier_list.RegistryTierListActivity">
 
     <EditText
         android:id="@+id/edtName"

@@ -1,4 +1,4 @@
-package com.example.tier_list_app;
+package com.example.tier_list_app.activities.tier_list;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tier_list_app.R;
 import com.example.tier_list_app.model.Item;
 
 import java.util.List;
