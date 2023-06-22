@@ -29,7 +29,7 @@ public class SignUpUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.sign_up);
         edtNome = findViewById(R.id.edtName);
         edtEmail = findViewById(R.id.edtEmail);
         edtUsername = findViewById(R.id.edtUsername);

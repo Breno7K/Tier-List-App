@@ -25,7 +25,7 @@ public class RegistryTierListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registy_tier_list);
+        setContentView(R.layout.tier_list_registry);
 
         dbHelper = new DBHelper(this);
         String tier_list_name = getIntent().getStringExtra("tier_list_name");

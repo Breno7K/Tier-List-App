@@ -29,7 +29,7 @@ public class TierListViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tier_list);
+        setContentView(R.layout.tier_list_view);
         dbHelper = new DBHelper(this);
 
         tierListRecyclerView = findViewById(R.id.tierListRecyclerView);
