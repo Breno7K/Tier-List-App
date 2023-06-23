@@ -12,7 +12,6 @@ import com.example.tier_list_app.R;
 import com.example.tier_list_app.activities.home.HomeActivity;
 import com.example.tier_list_app.database.DBHelper;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.ktx.Firebase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void cadastrar(View view) {
+
         Intent it = new Intent(this, SignUpUserActivity.class);
         startActivity(it);
 
