@@ -66,14 +66,11 @@ public class RegistryTierActivity extends AppCompatActivity {
         AmbilWarnaDialog colorPickerDialog = new AmbilWarnaDialog(this, selectedColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
             public void onCancel(AmbilWarnaDialog dialog) {
-                // Handle color picker cancellation
             }
 
             @Override
             public void onOk(AmbilWarnaDialog dialog, int color) {
                 selectedColor = color;
-                // Do something with the selected color, such as setting it to a view
-                // For example:
                 View colorPreview = findViewById(R.id.colorPreview);
                 colorPreview.setBackgroundColor(color);
             }

@@ -61,7 +61,6 @@ public class HomeActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_CODE_TIER_LIST) {
             if (resultCode == RESULT_OK) {
-                // Refresh the tier list in the HomeActivity
                 String username = getIntent().getStringExtra("chave_usuario");
                 fillList(username);
             }
@@ -187,7 +186,7 @@ public class HomeActivity extends AppCompatActivity {
 
             fillList(txtNome.getText().toString().replace("Bem vindo ", ""));
         } else if (item.getTitle().equals("Cancel")) {
-            // Handle cancel option if needed
+            finish();
         }
 
         return super.onContextItemSelected(item);
