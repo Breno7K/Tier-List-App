@@ -34,22 +34,41 @@ public class MainActivity extends AppCompatActivity {
     public void conectar(View view) {
         String usr=edtUsuario.getText().toString();
         String senha = edtSenha.getText().toString();
-        String password = helper.buscarSenha(usr);
 
-
-        if(senha.equals(password)){
-            Intent intent= new Intent(this, HomeActivity.class);
-            intent.putExtra("chave_usuario", usr);
-            startActivity(intent);
-        }
-        else{
-            Toast toast = Toast.makeText(MainActivity.this,
-                    "Usuário ou senha inválido",Toast.LENGTH_LONG);
-            toast.show();
-        }
+        firestore.collection("users")
+                .whereEqualTo("username512", usr)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        boolean userExists = !task.getResult().isEmpty();
+                        if (userExists) {
+                            String documentId = task.getResult().getDocuments().get(0).getId();
+                            firestore.collection("users")
+                                    .document(documentId)
+                                    .get()
+                                    .addOnCompleteListener(documentTask -> {
+                                        if (documentTask.isSuccessful()) {
+                                            String password = documentTask.getResult().getString("password");
+                                            if (senha.equals(password)) {
+                                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                                intent.putExtra("chave_usuario", usr);
+                                                startActivity(intent);
+                                            } else {
+                                                Toast.makeText(MainActivity.this, "Senha inválida", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            Toast.makeText(MainActivity.this, "Erro ao buscar usuário", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        } else {
+                            Toast.makeText(MainActivity.this, "Usuário não encontrado", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(MainActivity.this, "Erro ao buscar usuário", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
     public void cadastrar(View view) {
-
 
         Intent it = new Intent(this, SignUpUserActivity.class);
         startActivity(it);
