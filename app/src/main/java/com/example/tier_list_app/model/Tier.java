@@ -9,6 +9,8 @@ public class Tier {
     private String name;
     private ArrayList<Item> itens;
 
+    private String color;
+
     int id;
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -36,5 +38,13 @@ public class Tier {
 
     public void setItens(ArrayList<Item> itens) {
         this.itens = itens;
+    }
+
+    private String getColor(){
+        return this.color;
+    }
+
+    private void setColor(String color){
+        this.color = color;
     }
 }
