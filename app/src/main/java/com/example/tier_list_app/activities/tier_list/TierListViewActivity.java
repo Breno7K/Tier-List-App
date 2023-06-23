@@ -1,5 +1,6 @@
 package com.example.tier_list_app.activities.tier_list;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +17,7 @@ import com.example.tier_list_app.model.TierList;
 
 import java.util.List;
 
-public class TierListViewActivity extends AppCompatActivity {
+public class TierListViewActivity extends AppCompatActivity implements ItemListAdapter.OnAddItemClickListener {
 
     private RecyclerView tierListRecyclerView;
     private TierListAdapter tierListAdapter;
@@ -40,29 +41,17 @@ public class TierListViewActivity extends AppCompatActivity {
         int tierListId = getIntent().getIntExtra("chave_tier_list_id", -1);
         TierList tierlist = dbHelper.buscarTierList(tierListId);
 
-            List<Tier> listOfTiers = dbHelper.buscarTiers(tierlist);
+        List<Tier> listOfTiers = dbHelper.buscarTiers(tierlist);
 
-            if (!listOfTiers.isEmpty()) {
-                tierListAdapter = new TierListAdapter(listOfTiers);
-                tierListRecyclerView.setAdapter(tierListAdapter);
-                txtEmptyMessage.setVisibility(View.GONE);
-            } else {
-                tierListRecyclerView.setVisibility(View.GONE);
-                txtEmptyMessage.setVisibility(View.VISIBLE);
-                txtEmptyMessage.setText("You still have no tiers here :C");
-            }
-
-        btnCreateTier.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TierListViewActivity.this, RegistryTierActivity.class);
-                intent.putExtra("chave_tier_list_id", tierListId);
-                intent.putExtra("chave_usuario", username);
-                startActivity(intent);
-            }
-        });
-
-
+        if (!listOfTiers.isEmpty()) {
+            tierListAdapter = new TierListAdapter(listOfTiers, this);
+            tierListRecyclerView.setAdapter(tierListAdapter);
+            txtEmptyMessage.setVisibility(View.GONE);
+        } else {
+            tierListRecyclerView.setVisibility(View.GONE);
+            txtEmptyMessage.setVisibility(View.VISIBLE);
+            txtEmptyMessage.setText("You still have no tiers here :C");
+        }
 
         btnCreateTier.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +62,7 @@ public class TierListViewActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -86,7 +76,7 @@ public class TierListViewActivity extends AppCompatActivity {
             List<Tier> updatedTierList = dbHelper.buscarTiers(tierList);
 
             if (!updatedTierList.isEmpty()) {
-                tierListAdapter = new TierListAdapter(updatedTierList);
+                tierListAdapter = new TierListAdapter(updatedTierList, this);
                 tierListRecyclerView.setAdapter(tierListAdapter);
                 txtEmptyMessage.setVisibility(View.GONE);
             } else {
@@ -102,12 +92,14 @@ public class TierListViewActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Refresh the data here
+            // Update lista
             onResume();
         }
     }
 
-
-
-
+    @Override
+    public void onAddItemClick(Context context) {
+        Intent intent = new Intent(TierListViewActivity.this, RegistryItemActivity.class);
+        startActivity(intent);
+    }
 }
