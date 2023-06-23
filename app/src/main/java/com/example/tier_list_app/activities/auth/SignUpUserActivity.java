@@ -12,7 +12,7 @@ import com.example.tier_list_app.R;
 import com.example.tier_list_app.database.DBHelper;
 import com.example.tier_list_app.model.User;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class SignUpUserActivity extends AppCompatActivity {
@@ -66,6 +66,7 @@ public class SignUpUserActivity extends AppCompatActivity {
         String usuario = edtUsername.getText().toString();
         String senha = edtSenha.getText().toString();
         String confSenha = edtConfSenha.getText().toString();
+
         if (!senha.equals(confSenha)) {
             Toast toast = Toast.makeText(SignUpUserActivity.this,
                     "Senha diferente da confirmação de senha!",
@@ -79,22 +80,32 @@ public class SignUpUserActivity extends AppCompatActivity {
             User.setUsername(usuario);
             User.setPassword(senha);
 
-            if (btnSalvar.getText().toString().equals("SALVAR")) {
-                helper.insereUser(User);
-
-                firebase.collection("users").document(email).set(User)
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(SignUpUserActivity.this, "Usuário adicionado com sucesso!", Toast.LENGTH_SHORT).show();
-                            limpar();
-                            finish();
-                        })
-                        .addOnFailureListener(e -> Toast.makeText(SignUpUserActivity.this, "Erro ao adicionar usuário.", Toast.LENGTH_SHORT).show());
-            } else {
-                helper.atualizarUser(User);
-                helper.close();
-                limpar();
-                finish();
-            }
+            // Verificar se o username já está em uso
+            firebase.collection("users")
+                    .whereEqualTo("username", usuario)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                                // O username já está em uso
+                                Toast.makeText(SignUpUserActivity.this, "Username já está em uso. Escolha outro.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // O username é único, adicionar o usuário
+                                helper.insereUser(User);
+                                firebase.collection("users").document(usuario).set(User)
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(SignUpUserActivity.this, "Usuário adicionado com sucesso!", Toast.LENGTH_SHORT).show();
+                                            limpar();
+                                            finish();
+                                        })
+                                        .addOnFailureListener(e -> Toast.makeText(SignUpUserActivity.this, "Erro ao adicionar usuário.", Toast.LENGTH_SHORT).show());
+                            }
+                        } else {
+                            // Ocorreu um erro ao acessar o banco de dados
+                            Toast.makeText(SignUpUserActivity.this, "Erro ao verificar username.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
     public void limpar(){
