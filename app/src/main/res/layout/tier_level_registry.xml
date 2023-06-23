@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="20dp"
     tools:context=".activities.tier_list.RegistryTierActivity">
 
@@ -12,37 +11,63 @@
         android:id="@+id/edtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="Nome do tier:"
         android:inputType="textPersonName" />
 
     <LinearLayout
+        android:id="@+id/colorPreviewLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="50dp"
-        android:layout_weight="1"
-        android:gravity="bottom"
-        android:orientation="horizontal">
+        android:layout_below="@id/edtName"
+        android:layout_marginTop="80dp"
+        android:layout_above="@id/buttonLayout"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/colorPreview"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:background="#FF0000" />
+
+        <Button
+            android:id="@+id/btnPickColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Pick Color"
+            android:onClick="openColorPicker" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/btnSalvar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_weight="1"
-            android:onClick="cadastrar"
-            android:text="Cadastrar" />
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:text="Cadastrar"
+            android:onClick="cadastrar" />
 
         <Button
             android:id="@+id/btnCancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="15dp"
-            android:layout_weight="1"
-            android:onClick="cancelar"
-            android:text="CANCELAR" />
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:text="CANCELAR"
+            android:onClick="cancelar" />
+
     </LinearLayout>
-</LinearLayout>
+
+</RelativeLayout>

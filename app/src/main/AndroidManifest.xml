@@ -31,6 +31,10 @@
 
         <activity android:name="com.example.tier_list_app.activities.tier_list.TierListViewActivity" />
 
+        <activity
+            android:name="com.example.tier_list_app.activities.tier_list.RegistryItemActivity"
+            android:label="Registry Item Activity" />
+
 
 
     </application>

@@ -14,6 +14,8 @@ import com.example.tier_list_app.database.DBHelper;
 import com.example.tier_list_app.model.Tier;
 import com.example.tier_list_app.model.TierList;
 
+import yuku.ambilwarna.AmbilWarnaDialog;
+
 public class RegistryTierActivity extends AppCompatActivity {
 
     private EditText edtName;
@@ -21,6 +23,8 @@ public class RegistryTierActivity extends AppCompatActivity {
     private Button btnCancel;
 
     private DBHelper dbHelper;
+
+    private int selectedColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,15 @@ public class RegistryTierActivity extends AppCompatActivity {
         edtName = findViewById(R.id.edtName);
         btnSalvar = findViewById(R.id.btnSalvar);
         btnCancel = findViewById(R.id.btnCancelar);
+
+        Button btnPickColor = findViewById(R.id.btnPickColor);
+        btnPickColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openColorPicker();
+            }
+        });
+
 
 
         btnSalvar.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +60,22 @@ public class RegistryTierActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public void openColorPicker() {
+        AmbilWarnaDialog colorPickerDialog = new AmbilWarnaDialog(this, selectedColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+            }
+
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                selectedColor = color;
+                View colorPreview = findViewById(R.id.colorPreview);
+                colorPreview.setBackgroundColor(color);
+            }
+        });
+        colorPickerDialog.show();
     }
 
     public void saveTier() {
