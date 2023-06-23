@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void cadastrar(View view) {
 
+
         Intent it = new Intent(this, SignUpUserActivity.class);
         startActivity(it);
 
