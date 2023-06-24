@@ -24,7 +24,6 @@ public class RegistryTierListActivity extends AppCompatActivity {
 
     private TierList tierList;
 
-    private DBHelper dbHelper;
 
     private FirebaseFirestore firestore;
 
@@ -39,7 +38,6 @@ public class RegistryTierListActivity extends AppCompatActivity {
 
         String username = getIntent().getStringExtra("chave_usuario");
 
-        dbHelper = new DBHelper(this);
         String tier_list_name = getIntent().getStringExtra("tier_list_name");
         edtName = findViewById(R.id.edtName);
         btnSalvar = findViewById(R.id.btnSalvar);
