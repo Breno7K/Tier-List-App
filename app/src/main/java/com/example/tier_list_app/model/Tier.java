@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Tier {
 
-    private String tierlistName;
+    private String tierlistId;
 
     private String name;
     private ArrayList<Item> itens;
@@ -15,12 +15,12 @@ public class Tier {
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
-    public String getTierlistName() {
-        return tierlistName;
+    public String getTierlistId() {
+        return tierlistId;
     }
 
-    public void setTierlistName(String tierlistName) {
-        this.tierlistName = tierlistName;
+    public void setTierlistId(String tierlistName) {
+        this.tierlistId = tierlistName;
     }
 
 
@@ -40,11 +40,11 @@ public class Tier {
         this.itens = itens;
     }
 
-    private String getColor(){
+    public String getColor(){
         return this.color;
     }
 
-    private void setColor(String color){
+    public void setColor(String color){
         this.color = color;
     }
 }

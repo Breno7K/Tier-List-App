@@ -7,11 +7,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tier_list_app.R;
 import com.example.tier_list_app.model.Tier;
-import com.example.tier_list_app.model.TierList;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -20,7 +28,7 @@ public class RegistryTierActivity extends AppCompatActivity {
     private EditText edtName;
     private Button btnSalvar;
     private Button btnCancel;
-
+    private FirebaseFirestore firestore;
     private int selectedColor;
 
     @Override
@@ -40,7 +48,7 @@ public class RegistryTierActivity extends AppCompatActivity {
             }
         });
 
-
+        firestore = FirebaseFirestore.getInstance(); // Initialize FirebaseFirestore
 
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +57,6 @@ public class RegistryTierActivity extends AppCompatActivity {
             }
         });
 
-        Button btnCancel = findViewById(R.id.btnCancelar);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,12 +83,15 @@ public class RegistryTierActivity extends AppCompatActivity {
 
     public void saveTier() {
         Bundle args = getIntent().getExtras();
-        int tierListId = args.getInt("chave_tier_list_id", -1);
-//        TierList tierList = dbHelper.buscarTierList(tierListId);
+        String tierListId = args.getString("chave_tier_list_id");
+
         String name = edtName.getText().toString().trim();
         Tier tier = new Tier();
         tier.setName(name);
-//        dbHelper.insereTier(tierList, tier);
+        tier.setColor(String.format("#%06X", (0xFFFFFF & selectedColor))); // Set the selected color
+
+        insereTier(tierListId, tier);
+
         String username = getIntent().getStringExtra("chave_usuario");
         Toast.makeText(this, "Tier created successfully", Toast.LENGTH_SHORT).show();
 
@@ -92,6 +102,32 @@ public class RegistryTierActivity extends AppCompatActivity {
         finish();
     }
 
+    private void insereTier(String tierListId, Tier tier) {
+        CollectionReference tiersCollection = firestore.collection("tier");
+        DocumentReference tierDocument = tiersCollection.document();
+        tier.setId(tierDocument.getId());
+        tier.setTierlistId(tierListId);
+
+        Map<String, Object> tierData = new HashMap<>();
+        tierData.put("name", tier.getName());
+        tierData.put("itens", tier.getItens());
+        tierData.put("color", tier.getColor());
+        tierData.put("tierListId",tier.getTierlistId());
+
+        tierDocument.set(tierData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(RegistryTierActivity.this, "Tier created successfully", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(RegistryTierActivity.this, "Failed to create tier", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
 
 }
