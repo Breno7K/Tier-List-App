@@ -11,9 +11,9 @@ public class Tier {
 
     private String color;
 
-    int id;
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    String id;
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public String getTierlistName() {
         return tierlistName;

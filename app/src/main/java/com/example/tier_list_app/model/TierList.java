@@ -10,9 +10,9 @@ public class TierList implements Serializable{
     private String name;
     private ArrayList<Tier> tiers;
 
-    int id;
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    String id;
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public String getUsername() {
         return username;

@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tier_list_app.R;
-import com.example.tier_list_app.database.DBHelper;
 import com.example.tier_list_app.model.Tier;
 import com.example.tier_list_app.model.TierList;
 
@@ -23,7 +22,6 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
     private TierListAdapter tierListAdapter;
     private Button btnCreateTier;
 
-    private DBHelper dbHelper;
 
     private TextView txtEmptyMessage;
 
@@ -31,7 +29,6 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tier_list_view);
-        dbHelper = new DBHelper(this);
 
         tierListRecyclerView = findViewById(R.id.tierListRecyclerView);
         btnCreateTier = findViewById(R.id.btnCadastrarTier);
@@ -39,19 +36,19 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
 
         String username = getIntent().getStringExtra("chave_usuario");
         int tierListId = getIntent().getIntExtra("chave_tier_list_id", -1);
-        TierList tierlist = dbHelper.buscarTierList(tierListId);
-
-        List<Tier> listOfTiers = dbHelper.buscarTiers(tierlist);
-
-        if (!listOfTiers.isEmpty()) {
-            tierListAdapter = new TierListAdapter(listOfTiers, this);
-            tierListRecyclerView.setAdapter(tierListAdapter);
-            txtEmptyMessage.setVisibility(View.GONE);
-        } else {
-            tierListRecyclerView.setVisibility(View.GONE);
-            txtEmptyMessage.setVisibility(View.VISIBLE);
-            txtEmptyMessage.setText("You still have no tiers here :C");
-        }
+//        TierList tierlist = dbHelper.buscarTierList(tierListId);
+//
+//        List<Tier> listOfTiers = dbHelper.buscarTiers(tierlist);
+//
+//        if (!listOfTiers.isEmpty()) {
+//            tierListAdapter = new TierListAdapter(listOfTiers, this);
+//            tierListRecyclerView.setAdapter(tierListAdapter);
+//            txtEmptyMessage.setVisibility(View.GONE);
+//        } else {
+//            tierListRecyclerView.setVisibility(View.GONE);
+//            txtEmptyMessage.setVisibility(View.VISIBLE);
+//            txtEmptyMessage.setText("You still have no tiers here :C");
+//        }
 
         btnCreateTier.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,18 +69,18 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
         if (extras != null) {
             int tierListId = extras.getInt("chave_tier_list_id");
             String username = extras.getString("chave_usuario");
-            TierList tierList = dbHelper.buscarTierList(tierListId);
-            List<Tier> updatedTierList = dbHelper.buscarTiers(tierList);
-
-            if (!updatedTierList.isEmpty()) {
-                tierListAdapter = new TierListAdapter(updatedTierList, this);
-                tierListRecyclerView.setAdapter(tierListAdapter);
-                txtEmptyMessage.setVisibility(View.GONE);
-            } else {
-                tierListRecyclerView.setVisibility(View.GONE);
-                txtEmptyMessage.setVisibility(View.VISIBLE);
-                txtEmptyMessage.setText("You still have no tiers here :C");
-            }
+//            TierList tierList = dbHelper.buscarTierList(tierListId);
+//            List<Tier> updatedTierList = dbHelper.buscarTiers(tierList);
+//
+//            if (!updatedTierList.isEmpty()) {
+//                tierListAdapter = new TierListAdapter(updatedTierList, this);
+//                tierListRecyclerView.setAdapter(tierListAdapter);
+//                txtEmptyMessage.setVisibility(View.GONE);
+//            } else {
+//                tierListRecyclerView.setVisibility(View.GONE);
+//                txtEmptyMessage.setVisibility(View.VISIBLE);
+//                txtEmptyMessage.setText("You still have no tiers here :C");
+//            }
         }
     }
 
