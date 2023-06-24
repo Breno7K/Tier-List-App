@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class TierList implements Serializable{
 
-    private String username;
+    private String userEmail;
     private String name;
     private ArrayList<Tier> tiers;
 
@@ -14,12 +14,12 @@ public class TierList implements Serializable{
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
-    public String getUsername() {
-        return username;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getName() {
@@ -42,4 +42,5 @@ public class TierList implements Serializable{
     public String toString(){
         return getName();
     }
+
 }

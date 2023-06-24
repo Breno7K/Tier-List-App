@@ -27,12 +27,14 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
     private TierListAdapter tierListAdapter;
     private Button btnCreateTier;
 
-
     private TextView txtEmptyMessage;
 
     private FirebaseFirestore firestore;
     private String tierListId;
     private TierList tierlist;
+
+    private String tierId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +56,12 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
                 Intent intent = new Intent(TierListViewActivity.this, RegistryTierActivity.class);
                 intent.putExtra("chave_tier_list_id", tierListId);
                 intent.putExtra("chave_usuario", username);
-                startActivity(intent);
+                startActivityForResult(intent, 1); // Start the activity for result
             }
         });
 
         updateTierListUI();
     }
-
 
     private interface OnTierListLoadedListener {
         void onTierListLoaded(TierList tierList);
@@ -75,13 +76,13 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             String name = document.getString("name");
-                            String username = document.getString("username");
+                            String email = document.getString("email");
                             ArrayList<Tier> tiers = (ArrayList<Tier>) document.get("tiers");
 
                             TierList tierList = new TierList();
                             tierList.setId(tierListId);
                             tierList.setName(name);
-                            tierList.setUsername(username);
+                            tierList.setUserEmail(email);
                             tierList.setTiers(tiers);
 
                             listener.onTierListLoaded(tierList);
@@ -96,7 +97,7 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
                 });
     }
 
-    private void buscarTiers(TierList tierList, OnTiersLoadedListener listener) {
+    private void buscarTiers(TierList tierList, String tierId, OnTiersLoadedListener listener) {
         String tierListId = tierList.getId();
 
         firestore.collection("tier")
@@ -106,7 +107,6 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
                     if (task.isSuccessful()) {
                         List<Tier> tiers = new ArrayList<>();
                         for (DocumentSnapshot document : task.getResult()) {
-                            String tierId = document.getId();
                             String tierName = document.getString("name");
                             String tierColor = document.getString("color");
 
@@ -126,7 +126,12 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
     }
 
 
-
+    public void onAddItemClick(Context context, String tierId) {
+        Intent intent = new Intent(TierListViewActivity.this, RegistryItemActivity.class);
+        intent.putExtra("chave_tier_list_id", tierListId);
+        intent.putExtra("chave_tier_id", tierId);
+        startActivityForResult(intent, 1);
+    }
 
     private interface OnTiersLoadedListener {
         void onTiersLoaded(List<Tier> tiers);
@@ -134,57 +139,47 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
 
     private void updateTierListUI() {
         if (tierlist != null) {
-            buscarTiers(tierlist, new OnTiersLoadedListener() {
+            buscarTiers(tierlist, tierId, new OnTiersLoadedListener() {
                 @Override
                 public void onTiersLoaded(List<Tier> tiers) {
                     if (!tiers.isEmpty()) {
-                        tierListAdapter = new TierListAdapter(tiers, TierListViewActivity.this); // Add the missing onAddItemClickListener argument
+                        tierListAdapter = new TierListAdapter(tiers, TierListViewActivity.this, tierId);
                         tierListRecyclerView.setLayoutManager(new LinearLayoutManager(TierListViewActivity.this));
                         tierListRecyclerView.setAdapter(tierListAdapter);
                         txtEmptyMessage.setVisibility(View.GONE);
                     } else {
                         tierListRecyclerView.setVisibility(View.GONE);
                         txtEmptyMessage.setVisibility(View.VISIBLE);
-                        txtEmptyMessage.setText("You still have no tiers here :C");
+                    }
+                }
+            });
+        } else {
+            buscarTierList(tierListId, new OnTierListLoadedListener() {
+                @Override
+                public void onTierListLoaded(TierList tierList) {
+                    if (tierList != null) {
+                        tierlist = tierList;
+                        buscarTiers(tierList, tierId, new OnTiersLoadedListener() {
+                            @Override
+                            public void onTiersLoaded(List<Tier> tiers) {
+                                if (!tiers.isEmpty()) {
+                                    tierListAdapter = new TierListAdapter(tiers, TierListViewActivity.this, tierId);
+                                    tierListRecyclerView.setLayoutManager(new LinearLayoutManager(TierListViewActivity.this));
+                                    tierListRecyclerView.setAdapter(tierListAdapter);
+                                    txtEmptyMessage.setVisibility(View.GONE);
+                                } else {
+                                    tierListRecyclerView.setVisibility(View.GONE);
+                                    txtEmptyMessage.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+                    } else {
+                        tierListRecyclerView.setVisibility(View.GONE);
+                        txtEmptyMessage.setVisibility(View.VISIBLE);
                     }
                 }
             });
         }
     }
 
-
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            tierListId = extras.getString("chave_tier_list_id"); // Update tierListId
-            String username = extras.getString("chave_usuario"); // Update username
-
-            buscarTierList(tierListId, new OnTierListLoadedListener() {
-                @Override
-                public void onTierListLoaded(TierList tierList) {
-                    tierlist = tierList;
-                    updateTierListUI();
-                }
-            });
-        }
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Update lista
-            onResume();
-        }
-    }
-
-    @Override
-    public void onAddItemClick(Context context) {
-        Intent intent = new Intent(TierListViewActivity.this, RegistryItemActivity.class);
-        startActivity(intent);
-    }
 }

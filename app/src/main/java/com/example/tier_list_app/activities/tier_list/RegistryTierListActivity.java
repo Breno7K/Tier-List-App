@@ -36,7 +36,7 @@ public class RegistryTierListActivity extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        String username = getIntent().getStringExtra("chave_usuario");
+        String email = getIntent().getStringExtra("chave_usuario");
 
         String tier_list_name = getIntent().getStringExtra("tier_list_name");
         edtName = findViewById(R.id.edtName);
@@ -46,7 +46,7 @@ public class RegistryTierListActivity extends AppCompatActivity {
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveTierList(username);
+                saveTierList(email);
             }
         });
 
@@ -66,7 +66,7 @@ public class RegistryTierListActivity extends AppCompatActivity {
                             TierList existingTierList = documentSnapshot.toObject(TierList.class);
                             if (existingTierList != null) {
                                 tierList.setId(existingTierList.getId());
-                                tierList.setUsername(existingTierList.getUsername());
+                                tierList.setUserEmail(existingTierList.getUserEmail());
                                 tierList.setName(existingTierList.getName());
                                 edtName.setText(existingTierList.getName());
                             }
@@ -85,14 +85,13 @@ public class RegistryTierListActivity extends AppCompatActivity {
     }
 
 
-    private void saveTierList(String userName) {
+    private void saveTierList(String userEmail) {
         String tierListNameInput = edtName.getText().toString();
-        tierList.setUsername(userName);
+        tierList.setUserEmail(userEmail);
         tierList.setName(tierListNameInput);
 
         String tierListId = getIntent().getStringExtra("chave_tier_list_id");
         if (tierListId != null) {
-            // Update an existing tier list
             firestore.collection("tier_lists")
                     .document(tierListId)
                     .update("name", tierList.getName())
@@ -111,15 +110,29 @@ public class RegistryTierListActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            // Add a new tier list
             firestore.collection("tier_lists")
                     .add(tierList)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            Toast.makeText(RegistryTierListActivity.this, "Tier List created successfully", Toast.LENGTH_SHORT).show();
-                            setResult(RESULT_OK);
-                            finish();
+                            String newTierListId = documentReference.getId();
+                            tierList.setId(newTierListId);
+
+                            documentReference.update("id", newTierListId)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(RegistryTierListActivity.this, "Tier List created successfully", Toast.LENGTH_SHORT).show();
+                                            setResult(RESULT_OK);
+                                            finish();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(RegistryTierListActivity.this, "Failed to create Tier List", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -130,6 +143,8 @@ public class RegistryTierListActivity extends AppCompatActivity {
                     });
         }
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -148,7 +163,7 @@ public class RegistryTierListActivity extends AppCompatActivity {
                             TierList fetchedTierList = documentSnapshot.toObject(TierList.class);
                             if (fetchedTierList != null) {
                                 tierList.setId(fetchedTierList.getId());
-                                tierList.setUsername(fetchedTierList.getUsername());
+                                tierList.setUserEmail(fetchedTierList.getUserEmail());
                                 tierList.setName(fetchedTierList.getName());
                             }
                         }

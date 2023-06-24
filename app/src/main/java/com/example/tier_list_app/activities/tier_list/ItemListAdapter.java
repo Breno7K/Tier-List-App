@@ -1,7 +1,6 @@
 package com.example.tier_list_app.activities.tier_list;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +23,12 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     private List<Item> itemList;
     private OnAddItemClickListener onAddItemClickListener;
     private Context context;
+    private String tierId; // Add the tierId field
 
-    public ItemListAdapter(List<Item> itemList, OnAddItemClickListener onAddItemClickListener) {
+    public ItemListAdapter(List<Item> itemList, OnAddItemClickListener onAddItemClickListener, String tierId) {
         this.itemList = itemList != null ? itemList : new ArrayList<>();
         this.onAddItemClickListener = onAddItemClickListener;
+        this.tierId = tierId; // Store the tierId value
     }
 
     @NonNull
@@ -49,7 +50,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     if (onAddItemClickListener != null) {
-                        onAddItemClickListener.onAddItemClick(context);
+                        onAddItemClickListener.onAddItemClick(context, tierId); // Pass the tierId value
                     }
                 }
             });
@@ -87,6 +88,6 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     }
 
     public interface OnAddItemClickListener {
-        void onAddItemClick(Context context);
+        void onAddItemClick(Context context, String tierId);
     }
 }
