@@ -44,4 +44,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
     apply plugin: 'com.google.gms.google-services'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }
