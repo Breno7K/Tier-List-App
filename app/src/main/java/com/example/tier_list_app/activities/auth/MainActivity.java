@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         String senha = edtSenha.getText().toString();
 
         firestore.collection("users")
-                .whereEqualTo("username512", usr)
+                .whereEqualTo("username", usr)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
