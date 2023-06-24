@@ -10,7 +10,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tier_list_app.R;
-import com.example.tier_list_app.database.DBHelper;
 import com.example.tier_list_app.model.Tier;
 import com.example.tier_list_app.model.TierList;
 
@@ -22,8 +21,6 @@ public class RegistryTierActivity extends AppCompatActivity {
     private Button btnSalvar;
     private Button btnCancel;
 
-    private DBHelper dbHelper;
-
     private int selectedColor;
 
     @Override
@@ -31,7 +28,6 @@ public class RegistryTierActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tier_level_registry);
 
-        dbHelper = new DBHelper(this);
         edtName = findViewById(R.id.edtName);
         btnSalvar = findViewById(R.id.btnSalvar);
         btnCancel = findViewById(R.id.btnCancelar);
@@ -81,11 +77,11 @@ public class RegistryTierActivity extends AppCompatActivity {
     public void saveTier() {
         Bundle args = getIntent().getExtras();
         int tierListId = args.getInt("chave_tier_list_id", -1);
-        TierList tierList = dbHelper.buscarTierList(tierListId);
+//        TierList tierList = dbHelper.buscarTierList(tierListId);
         String name = edtName.getText().toString().trim();
         Tier tier = new Tier();
         tier.setName(name);
-        dbHelper.insereTier(tierList, tier);
+//        dbHelper.insereTier(tierList, tier);
         String username = getIntent().getStringExtra("chave_usuario");
         Toast.makeText(this, "Tier created successfully", Toast.LENGTH_SHORT).show();
 

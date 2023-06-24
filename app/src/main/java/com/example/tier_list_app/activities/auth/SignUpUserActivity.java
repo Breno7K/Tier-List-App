@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.tier_list_app.R;
-import com.example.tier_list_app.database.DBHelper;
 import com.example.tier_list_app.model.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -17,7 +16,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class SignUpUserActivity extends AppCompatActivity {
 
-    DBHelper helper = new DBHelper(this);
     private EditText edtNome;
     private EditText edtEmail;
     private EditText edtUsername;
@@ -92,7 +90,6 @@ public class SignUpUserActivity extends AppCompatActivity {
                                 Toast.makeText(SignUpUserActivity.this, "Username já está em uso. Escolha outro.", Toast.LENGTH_SHORT).show();
                             } else {
                                 // O username é único, adicionar o usuário
-                                helper.insereUser(User);
                                 firebase.collection("users").document(usuario).set(User)
                                         .addOnSuccessListener(aVoid -> {
                                             Toast.makeText(SignUpUserActivity.this, "Usuário adicionado com sucesso!", Toast.LENGTH_SHORT).show();

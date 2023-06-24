@@ -10,15 +10,11 @@ import android.widget.Toast;
 
 import com.example.tier_list_app.R;
 import com.example.tier_list_app.activities.home.HomeActivity;
-import com.example.tier_list_app.database.DBHelper;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    DBHelper helper = new DBHelper(this);
     private EditText edtUsuario;
     private EditText edtSenha;
     private FirebaseFirestore firestore;
