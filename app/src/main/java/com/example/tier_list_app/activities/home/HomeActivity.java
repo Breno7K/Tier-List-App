@@ -21,6 +21,7 @@ import com.example.tier_list_app.activities.tier_list.TierListViewActivity;
 import com.example.tier_list_app.database.DBHelper;
 import com.example.tier_list_app.model.TierList;
 import com.example.tier_list_app.model.User;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -36,10 +37,15 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<TierList> arrayListTierList;
     private ArrayAdapter<TierList> arrayAdapterTierList;
 
+    private FirebaseFirestore firestore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tier_list_list_view);
+
+        firestore = FirebaseFirestore.getInstance();
+
 
         txtNome = findViewById(R.id.txtNome);
         listTierLists = findViewById(R.id.listTierLists);
