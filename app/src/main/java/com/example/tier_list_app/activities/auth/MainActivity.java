@@ -1,73 +1,60 @@
 package com.example.tier_list_app.activities.auth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.tier_list_app.R;
+import com.example.tier_list_app.activities.auth.SignUpUserActivity;
 import com.example.tier_list_app.activities.home.HomeActivity;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText edtUsuario;
     private EditText edtSenha;
-    private FirebaseFirestore firestore;
+    private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in);
-        edtUsuario=findViewById(R.id.edtUsuario);
-        edtSenha=findViewById(R.id.edtSenha);
-        firestore = FirebaseFirestore.getInstance();
-
+        edtUsuario = findViewById(R.id.edtUsuario);
+        edtSenha = findViewById(R.id.edtSenha);
+        firebaseAuth = FirebaseAuth.getInstance();
     }
+
     public void conectar(View view) {
-        String usr=edtUsuario.getText().toString();
+        String usr = edtUsuario.getText().toString();
         String senha = edtSenha.getText().toString();
 
-        firestore.collection("users")
-                .whereEqualTo("username", usr)
-                .get()
-                .addOnCompleteListener(task -> {
+        firebaseAuth.signInWithEmailAndPassword(usr, senha)
+                .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        boolean userExists = !task.getResult().isEmpty();
-                        if (userExists) {
-                            String documentId = task.getResult().getDocuments().get(0).getId();
-                            firestore.collection("users")
-                                    .document(documentId)
-                                    .get()
-                                    .addOnCompleteListener(documentTask -> {
-                                        if (documentTask.isSuccessful()) {
-                                            String password = documentTask.getResult().getString("password");
-                                            if (senha.equals(password)) {
-                                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                                                intent.putExtra("chave_usuario", usr);
-                                                startActivity(intent);
-                                            } else {
-                                                Toast.makeText(MainActivity.this, "Senha inválida", Toast.LENGTH_SHORT).show();
-                                            }
-                                        } else {
-                                            Toast.makeText(MainActivity.this, "Erro ao buscar usuário", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        } else {
-                            Toast.makeText(MainActivity.this, "Usuário não encontrado", Toast.LENGTH_SHORT).show();
+                        // Login successful, proceed to home activity
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        if (user != null) {
+                            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                            intent.putExtra("chave_usuario", user.getEmail());
+                            startActivity(intent);
                         }
                     } else {
-                        Toast.makeText(MainActivity.this, "Erro ao buscar usuário", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-    public void cadastrar(View view) {
+            // Login failed, display an error message
+            String errorMessage = task.getException().getMessage();
+            Toast.makeText(MainActivity.this, "Login failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+        }
 
+    });
+    }
+
+    public void cadastrar(View view) {
         Intent it = new Intent(this, SignUpUserActivity.class);
         startActivity(it);
-
     }
 }

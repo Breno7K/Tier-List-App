@@ -2,6 +2,7 @@ package com.example.tier_list_app.activities.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -86,9 +87,9 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void buscarTierLists(String username, OnTierListsLoadedListener listener) {
+    private void buscarTierLists(String email, OnTierListsLoadedListener listener) {
         firestore.collection("tier_lists")
-                .whereEqualTo("username", username)
+                .whereEqualTo("userEmail", email)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -100,7 +101,7 @@ public class HomeActivity extends AppCompatActivity {
 
                             TierList tierList = new TierList();
                             tierList.setId(id);
-                            tierList.setUsername(username);
+                            tierList.setUserEmail(email);
                             tierList.setName(name);
                             tierList.setTiers(tiers);
 
@@ -119,9 +120,9 @@ public class HomeActivity extends AppCompatActivity {
         void onTierListsLoaded(ArrayList<TierList> tierLists);
     }
 
-    private void buscarUser(String username, OnUserLoadedListener listener) {
+    private void buscarUser(String email, OnUserLoadedListener listener) {
         firestore.collection("users")
-                .whereEqualTo("username", username)
+                .whereEqualTo("email", email)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -133,8 +134,8 @@ public class HomeActivity extends AppCompatActivity {
                                     .get()
                                     .addOnCompleteListener(documentTask -> {
                                         if (documentTask.isSuccessful()) {
+                                            String username = documentTask.getResult().getString("name");
                                             String name = documentTask.getResult().getString("name");
-                                            String email = documentTask.getResult().getString("email");
                                             String password = documentTask.getResult().getString("password");
                                             User user = new User();
                                             user.setUsername(username);
@@ -145,6 +146,7 @@ public class HomeActivity extends AppCompatActivity {
                                         } else {
                                             Toast.makeText(HomeActivity.this, "Error fetching user", Toast.LENGTH_SHORT).show();
                                             listener.onUserLoaded(null);
+                                            Log.e("HomeActivity", "Error fetching user: " + documentTask.getException());
                                         }
                                     });
                         } else {
@@ -154,20 +156,22 @@ public class HomeActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(HomeActivity.this, "Error fetching user", Toast.LENGTH_SHORT).show();
                         listener.onUserLoaded(null);
+                        Log.e("HomeActivity", "Error fetching user: " + task.getException());
                     }
                 });
     }
+
 
     interface OnUserLoadedListener {
         void onUserLoaded(User user);
     }
 
-    public void fillList(String name) {
-        buscarUser(name, new OnUserLoadedListener() {
+    public void fillList(String email) {
+        buscarUser(email, new OnUserLoadedListener() {
             @Override
             public void onUserLoaded(User user) {
                 if (user != null) {
-                    buscarTierLists(user.getUsername(), new OnTierListsLoadedListener() {
+                    buscarTierLists(email, new OnTierListsLoadedListener() {
                         @Override
                         public void onTierListsLoaded(ArrayList<TierList> tierLists) {
                             if (tierLists != null) {
@@ -193,7 +197,7 @@ public class HomeActivity extends AppCompatActivity {
                                                     Intent intent = new Intent(HomeActivity.this, TierListViewActivity.class);
                                                     intent.putExtra("chave_tier_list_id", selectedTierList.getId());
                                                     intent.putExtra("tier_list_name", selectedTierList.getName());
-                                                    intent.putExtra("chave_usuario", selectedTierList.getUsername());
+                                                    intent.putExtra("chave_usuario", selectedTierList.getUserEmail());
                                                     startActivity(intent);
                                                 }
                                             });
@@ -208,7 +212,7 @@ public class HomeActivity extends AppCompatActivity {
                                                     Intent intent = new Intent(HomeActivity.this, RegistryTierListActivity.class);
                                                     intent.putExtra("chave_tier_list_id", selectedTierList.getId());
                                                     intent.putExtra("tier_list_name", selectedTierList.getName());
-                                                    intent.putExtra("chave_usuario", selectedTierList.getUsername());
+                                                    intent.putExtra("chave_usuario", selectedTierList.getUserEmail());
                                                     startActivityForResult(intent, REQUEST_CODE_TIER_LIST); // Use startActivityForResult instead of startActivity
                                                 }
                                             });

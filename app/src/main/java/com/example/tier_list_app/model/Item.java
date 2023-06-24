@@ -4,14 +4,29 @@ import java.io.Serializable;
 
 public class Item implements Serializable {
 
-    private String tierName;
-
+    private String id;
     private String name;
+    private String tierId;
     private String urlItem;
 
-    String id;
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public Item() {
+        // Default constructor required for Firestore
+    }
+
+    public Item(String id, String name, String tierId, String urlItem) {
+        this.id = id;
+        this.name = name;
+        this.tierId = tierId;
+        this.urlItem = urlItem;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -21,12 +36,12 @@ public class Item implements Serializable {
         this.name = name;
     }
 
-    public String getTierName() {
-        return tierName;
+    public String getTierId() {
+        return tierId;
     }
 
-    public void setTierName(String tier) {
-        this.tierName = tier;
+    public void setTierId(String tierId) {
+        this.tierId = tierId;
     }
 
     public String getUrlItem() {

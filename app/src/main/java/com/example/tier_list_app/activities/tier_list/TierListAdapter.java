@@ -18,13 +18,13 @@ import java.util.List;
 
 public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierViewHolder> {
     private List<Tier> tierList;
-
     private ItemListAdapter.OnAddItemClickListener onAddItemClickListener;
+    private String tierId;
 
-
-    public TierListAdapter(List<Tier> tierList, ItemListAdapter.OnAddItemClickListener onAddItemClickListener) {
-        this.tierList = tierList;
+    public TierListAdapter(List<Tier> tierList, ItemListAdapter.OnAddItemClickListener onAddItemClickListener, String tierId) {
+        this.tierList = tierList != null ? tierList : new ArrayList<>();
         this.onAddItemClickListener = onAddItemClickListener;
+        this.tierId = tierId;
     }
 
     @NonNull
@@ -40,13 +40,12 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
         holder.tierNameTextView.setText(tier.getName());
 
         ArrayList<Item> itemList = tier.getItens();
-        ItemListAdapter itemListAdapter = new ItemListAdapter(itemList, onAddItemClickListener);
+        ItemListAdapter itemListAdapter = new ItemListAdapter(itemList, onAddItemClickListener, tierId);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
         holder.itemRecyclerView.setLayoutManager(layoutManager);
         holder.itemRecyclerView.setAdapter(itemListAdapter);
     }
-
 
     @Override
     public int getItemCount() {
