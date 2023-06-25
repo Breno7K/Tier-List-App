@@ -43,7 +43,7 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
         btnCreateTier = findViewById(R.id.btnCadastrarTier);
         txtEmptyMessage = findViewById(R.id.txtEmptyMessage);
 
-        firestore = FirebaseFirestore.getInstance(); // Initialize the firestore variable
+        firestore = FirebaseFirestore.getInstance();
 
         String username = getIntent().getStringExtra("chave_usuario");
         tierListId = getIntent().getStringExtra("chave_tier_list_id");
@@ -54,7 +54,7 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
                 Intent intent = new Intent(TierListViewActivity.this, RegistryTierActivity.class);
                 intent.putExtra("chave_tier_list_id", tierListId);
                 intent.putExtra("chave_usuario", username);
-                startActivityForResult(intent, 1); // Start the activity for result
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -105,7 +105,7 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
                     if (task.isSuccessful()) {
                         List<Tier> tiers = new ArrayList<>();
                         for (DocumentSnapshot document : task.getResult()) {
-                            String tierId = document.getId(); // Get the tier ID from the document ID
+                            String tierId = document.getId();
                             String tierName = document.getString("name");
                             String tierColor = document.getString("color");
 
