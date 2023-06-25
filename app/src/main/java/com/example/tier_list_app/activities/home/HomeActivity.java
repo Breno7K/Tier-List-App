@@ -35,7 +35,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView txtNome;
     private ListView listTierLists;
-    private TierList tierList;
 
     private ArrayList<TierList> arrayListTierList;
     private ArrayAdapter<TierList> arrayAdapterTierList;
@@ -288,9 +287,5 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return super.onContextItemSelected(item);
-    }
-
-    private void alert(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

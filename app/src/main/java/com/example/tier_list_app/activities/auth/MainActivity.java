@@ -9,7 +9,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tier_list_app.R;
-import com.example.tier_list_app.activities.auth.SignUpUserActivity;
 import com.example.tier_list_app.activities.home.HomeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

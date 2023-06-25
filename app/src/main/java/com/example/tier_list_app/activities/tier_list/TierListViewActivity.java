@@ -192,6 +192,4 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
             });
         }
     }
-
-
 }
