@@ -88,17 +88,14 @@ public class SignUpUserActivity extends AppCompatActivity {
         user.setPassword(password);
         FirebaseFirestore.setLoggingEnabled(true);
 
-        // Create user with email and password
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // User creation success, add the user to Firestore
                             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                             if (firebaseUser != null) {
                                 user.setId(firebaseUser.getUid());
-                                // Add the user to Firestore collection
                                 firestore.collection("users")
                                         .document(username)
                                         .set(user)
@@ -118,7 +115,6 @@ public class SignUpUserActivity extends AppCompatActivity {
                                         });
                             }
                         } else {
-                            // User creation failed
                             Toast.makeText(SignUpUserActivity.this, "Erro ao criar usuário.", Toast.LENGTH_SHORT).show();
                         }
                     }

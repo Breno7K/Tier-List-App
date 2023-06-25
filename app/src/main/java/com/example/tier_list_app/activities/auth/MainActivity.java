@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth.signInWithEmailAndPassword(usr, senha)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Login successful, proceed to home activity
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         if (user != null) {
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     } else {
-            // Login failed, display an error message
             String errorMessage = task.getException().getMessage();
             Toast.makeText(MainActivity.this, "Login failed: " + errorMessage, Toast.LENGTH_SHORT).show();
         }

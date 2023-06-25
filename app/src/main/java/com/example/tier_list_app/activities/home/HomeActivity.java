@@ -213,7 +213,7 @@ public class HomeActivity extends AppCompatActivity {
                                                     intent.putExtra("chave_tier_list_id", selectedTierList.getId());
                                                     intent.putExtra("tier_list_name", selectedTierList.getName());
                                                     intent.putExtra("chave_usuario", selectedTierList.getUserEmail());
-                                                    startActivityForResult(intent, REQUEST_CODE_TIER_LIST); // Use startActivityForResult instead of startActivity
+                                                    startActivityForResult(intent, REQUEST_CODE_TIER_LIST);
                                                 }
                                             });
 
