@@ -17,6 +17,7 @@ import com.example.tier_list_app.model.Tier;
 import com.example.tier_list_app.model.TierList;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,10 +111,11 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
 
         firestore.collection("tier")
                 .whereEqualTo("tierListId", tierListId)
+                .orderBy("createdAt", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        List<Tier> tiers = new ArrayList<>();
+                        ArrayList<Tier> tiers = new ArrayList<>();
                         for (DocumentSnapshot document : task.getResult()) {
                             String tierId = document.getId();
                             String tierName = document.getString("name");
