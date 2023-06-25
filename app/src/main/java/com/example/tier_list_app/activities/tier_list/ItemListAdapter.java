@@ -16,74 +16,80 @@ import com.example.tier_list_app.model.Item;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHolder> {
-    private static final int VIEW_TYPE_ITEM = 0;
-    private static final int VIEW_TYPE_ADD_ITEM = 1;
-
+public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Item> itemList;
     private OnAddItemClickListener onAddItemClickListener;
     private Context context;
-    private String tierId; // Add the tierId field
+    private String tierId;
 
     public ItemListAdapter(List<Item> itemList, OnAddItemClickListener onAddItemClickListener, String tierId) {
-        this.itemList = itemList != null ? itemList : new ArrayList<>();
+        this.itemList = itemList;
         this.onAddItemClickListener = onAddItemClickListener;
-        this.tierId = tierId; // Store the tierId value
+        this.tierId = tierId;
+    }
+
+    public void setItemList(List<Item> itemList) {
+        this.itemList = itemList;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View itemView = inflater.inflate(R.layout.tier_item, parent, false);
-        return new ViewHolder(itemView, viewType);
+        return new ItemViewHolder(itemView);
+
     }
 
+
+
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (holder.viewType == VIEW_TYPE_ITEM) {
-            Item item = itemList.get(position);
-            holder.itemNameTextView.setText(item.getName());
-        } else if (holder.viewType == VIEW_TYPE_ADD_ITEM) {
-            holder.btnAddItem.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ItemViewHolder) {
+            if (itemList != null && position < itemList.size()) {
+                Item item = itemList.get(position);
+                ((ItemViewHolder) holder).bind(item);
+            }
+        } else if (holder instanceof AddItemViewHolder) {
+            AddItemViewHolder addItemViewHolder = (AddItemViewHolder) holder;
+            addItemViewHolder.btnAddItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onAddItemClickListener != null) {
-                        onAddItemClickListener.onAddItemClick(context, tierId); // Pass the tierId value
+                        onAddItemClickListener.onAddItemClick(context, tierId);
                     }
                 }
             });
         }
     }
 
+
     @Override
     public int getItemCount() {
         return itemList.size() + 1;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position == itemList.size()) {
-            return VIEW_TYPE_ADD_ITEM;
-        } else {
-            return VIEW_TYPE_ITEM;
+    private static class ItemViewHolder extends RecyclerView.ViewHolder {
+        TextView itemNameTextView;
+
+        ItemViewHolder(@NonNull View itemView) {
+            super(itemView);
+            itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
+        }
+
+        void bind(Item item) {
+            itemNameTextView.setText(item.getName());
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView itemNameTextView;
+    private static class AddItemViewHolder extends RecyclerView.ViewHolder {
         Button btnAddItem;
-        int viewType;
 
-        public ViewHolder(@NonNull View itemView, int viewType) {
+        AddItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.viewType = viewType;
-            if (viewType == VIEW_TYPE_ITEM) {
-                itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
-            } else if (viewType == VIEW_TYPE_ADD_ITEM) {
-                btnAddItem = itemView.findViewById(R.id.btnAddItem);
-            }
+            btnAddItem = itemView.findViewById(R.id.btnAddItem);
         }
     }
 

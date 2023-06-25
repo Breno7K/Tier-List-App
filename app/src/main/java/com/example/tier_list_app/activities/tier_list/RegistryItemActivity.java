@@ -82,7 +82,7 @@ public class RegistryItemActivity extends AppCompatActivity {
 
     private void saveItem() {
         String name = edtName.getText().toString().trim();
-        String tierListId = getIntent().getStringExtra("chave_tier_list_id");
+        String tierId = getIntent().getStringExtra("chave_tier_id");
 
         if (name.isEmpty()) {
             Toast.makeText(this, "Please enter the item name", Toast.LENGTH_SHORT).show();
@@ -97,12 +97,10 @@ public class RegistryItemActivity extends AppCompatActivity {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference itemsRef = firestore.collection("item");
 
-        String itemId = itemsRef.document().getId(); // Generate a new unique ID for the item
-
-        // Upload the selected image to Firebase Storage and get its download URL
+        String itemId = itemsRef.document().getId();
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        String imageName = itemId + ".jpg"; // Create a unique name for the image file
+        String imageName = itemId + ".jpg";
         StorageReference imageRef = storageRef.child(imageName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -118,12 +116,12 @@ public class RegistryItemActivity extends AppCompatActivity {
                             public void onSuccess(Uri downloadUri) {
                                 String imageUrl = downloadUri.toString();
 
-                                // Create the item with the download URL of the image
-                                Item item = new Item(itemId, name, tierListId, imageUrl);
+                                Item item = new Item(itemId, name, tierId, imageUrl);
 
                                 Map<String, Object> itemData = new HashMap<>();
+                                itemData.put("id", itemId);
                                 itemData.put("name", name);
-                                itemData.put("tierListId", tierListId);
+                                itemData.put("tierId", tierId);
                                 itemData.put("imageUrl", imageUrl);
 
                                 itemsRef.document(itemId)
