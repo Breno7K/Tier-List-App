@@ -136,8 +136,6 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
                 });
     }
 
-
-
     @Override
     public void onAddItemClick(Context context, String tierId) {
         Intent intent = new Intent(TierListViewActivity.this, RegistryItemActivity.class);
@@ -194,6 +192,4 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
             });
         }
     }
-
-
 }

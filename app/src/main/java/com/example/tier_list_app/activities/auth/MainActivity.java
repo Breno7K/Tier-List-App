@@ -9,7 +9,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tier_list_app.R;
-import com.example.tier_list_app.activities.auth.SignUpUserActivity;
 import com.example.tier_list_app.activities.home.HomeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth.signInWithEmailAndPassword(usr, senha)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Login successful, proceed to home activity
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         if (user != null) {
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
@@ -45,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     } else {
-            // Login failed, display an error message
             String errorMessage = task.getException().getMessage();
             Toast.makeText(MainActivity.this, "Login failed: " + errorMessage, Toast.LENGTH_SHORT).show();
         }

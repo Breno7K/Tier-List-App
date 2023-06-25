@@ -42,8 +42,6 @@ public class RegistryItemActivity extends AppCompatActivity {
 
     ImageView IVPreviewImage;
 
-    private FirebaseFirestore firestore;
-
     private static final int SELECT_PICTURE = 200;
 
     Bitmap selectedImageBitmap = null;

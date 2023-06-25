@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +14,6 @@ import com.example.tier_list_app.R;
 import com.example.tier_list_app.model.Item;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -30,10 +28,6 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.tierId = tierId;
     }
 
-    public void setItemList(List<Item> itemList) {
-        this.itemList = itemList;
-        notifyDataSetChanged();
-    }
 
     @NonNull
     @Override
@@ -66,10 +60,10 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        int itemCount = itemList.size();
-        return itemList.isEmpty() ? 0 : itemCount;
+        return itemList.size();
     }
-    private static class ItemViewHolder extends RecyclerView.ViewHolder {
+
+    private class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView itemImageView;
 
         ItemViewHolder(@NonNull View itemView) {

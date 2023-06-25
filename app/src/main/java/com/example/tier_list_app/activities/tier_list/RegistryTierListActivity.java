@@ -31,14 +31,9 @@ public class RegistryTierListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tier_list_registry);
-
         tierList = new TierList();
-
         firestore = FirebaseFirestore.getInstance();
-
         String email = getIntent().getStringExtra("chave_usuario");
-
-        String tier_list_name = getIntent().getStringExtra("tier_list_name");
         edtName = findViewById(R.id.edtName);
         btnSalvar = findViewById(R.id.btnSalvar);
         btnCancel = findViewById(R.id.btnCancelar);
@@ -172,12 +167,5 @@ public class RegistryTierListActivity extends AppCompatActivity {
                         Toast.makeText(RegistryTierListActivity.this, "Failed to fetch tier list data", Toast.LENGTH_SHORT).show();
                     });
         }
-    }
-
-    private void updateTierListInHomeActivity(TierList updatedTierList) {
-        Intent intent = new Intent();
-        intent.putExtra("updated_tier_list", updatedTierList);
-        setResult(RESULT_OK, intent);
-        finish();
     }
 }

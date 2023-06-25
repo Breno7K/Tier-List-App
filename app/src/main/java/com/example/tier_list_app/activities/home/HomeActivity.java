@@ -35,7 +35,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView txtNome;
     private ListView listTierLists;
-    private TierList tierList;
 
     private ArrayList<TierList> arrayListTierList;
     private ArrayAdapter<TierList> arrayAdapterTierList;
@@ -213,7 +212,7 @@ public class HomeActivity extends AppCompatActivity {
                                                     intent.putExtra("chave_tier_list_id", selectedTierList.getId());
                                                     intent.putExtra("tier_list_name", selectedTierList.getName());
                                                     intent.putExtra("chave_usuario", selectedTierList.getUserEmail());
-                                                    startActivityForResult(intent, REQUEST_CODE_TIER_LIST); // Use startActivityForResult instead of startActivity
+                                                    startActivityForResult(intent, REQUEST_CODE_TIER_LIST);
                                                 }
                                             });
 
@@ -288,9 +287,5 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return super.onContextItemSelected(item);
-    }
-
-    private void alert(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

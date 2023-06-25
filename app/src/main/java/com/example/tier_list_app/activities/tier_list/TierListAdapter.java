@@ -1,6 +1,5 @@
 package com.example.tier_list_app.activities.tier_list;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tier_list_app.R;
-import com.example.tier_list_app.activities.tier_list.ItemListAdapter;
 import com.example.tier_list_app.model.Item;
 import com.example.tier_list_app.model.Tier;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,15 +31,6 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
         this.listOfTiers = tierList != null ? tierList : new ArrayList<>();
         this.onAddItemClickListener = onAddItemClickListener;
     }
-
-    public interface OnAddItemClickListener {
-        void onAddItemClick(Context context, String tierId);
-    }
-
-    public void setOnAddItemClickListener(ItemListAdapter.OnAddItemClickListener listener) {
-        this.onAddItemClickListener = listener;
-    }
-
 
     @NonNull
     @Override
@@ -84,14 +73,6 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
     @Override
     public int getItemCount() {
         return listOfTiers.size();
-    }
-
-    public void updateTierList(List<Tier> updatedTierList) {
-        listOfTiers.clear();
-        if (updatedTierList != null) {
-            listOfTiers.addAll(updatedTierList);
-        }
-        notifyDataSetChanged();
     }
 
     public class TierViewHolder extends RecyclerView.ViewHolder {
