@@ -8,6 +8,7 @@ public class TierList implements Serializable{
 
     private String userEmail;
     private String name;
+
     private ArrayList<Tier> tiers;
 
     String id;

@@ -1,6 +1,7 @@
 package com.example.tier_list_app.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Tier {
 
@@ -10,6 +11,9 @@ public class Tier {
     private ArrayList<Item> itens;
 
     private String color;
+
+    private Date createdAt;
+
 
     String id;
     public String getId() { return id; }
@@ -38,5 +42,13 @@ public class Tier {
 
     public void setColor(String color){
         this.color = color;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

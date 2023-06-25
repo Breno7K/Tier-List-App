@@ -4,22 +4,44 @@
 
     <TextView
         android:id="@+id/tierNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/ambilwarna_alphacheckered"
         android:text="Tier Name"
-        android:textSize="18sp"/>
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemRecyclerView"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/tierNameTextView"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
+
+    <View
+        android:id="@+id/placeholderView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/tierNameTextView"
+        android:layout_above="@id/btnAddItem" />
 
     <Button
         android:id="@+id/btnAddItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add"
-        android:layout_alignParentEnd="true" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itemRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tierNameTextView" />
+        android:text="+"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/itemRecyclerView" />
 
 </RelativeLayout>

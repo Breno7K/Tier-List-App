@@ -1,5 +1,7 @@
 package com.example.tier_list_app.activities.tier_list;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,15 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
         this.onAddItemClickListener = onAddItemClickListener;
     }
 
+    public interface OnAddItemClickListener {
+        void onAddItemClick(Context context, String tierId);
+    }
+
+    public void setOnAddItemClickListener(ItemListAdapter.OnAddItemClickListener listener) {
+        this.onAddItemClickListener = listener;
+    }
+
+
     @NonNull
     @Override
     public TierViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,6 +56,7 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
         String tierId = tier.getId();
 
         holder.tierNameTextView.setText(tier.getName());
+        holder.tierNameTextView.setBackgroundColor(Color.parseColor(tier.getColor()));
 
         FirebaseFirestore.getInstance().collection("item")
                 .whereEqualTo("tierId", tierId)
@@ -82,7 +94,15 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
         notifyDataSetChanged();
     }
 
-    public static class TierViewHolder extends RecyclerView.ViewHolder {
+    // Retrieve the updated tier list based on your application's logic
+    private List<Tier> retrieveUpdatedTierList() {
+        // Replace this with your own logic to fetch the updated tier list
+        // For example, you could query a database or update a local data source
+        // Return the updated tier list
+        return new ArrayList<>();
+    }
+
+    public class TierViewHolder extends RecyclerView.ViewHolder {
         public View btnAddItem;
         TextView tierNameTextView;
         RecyclerView itemRecyclerView;
@@ -93,6 +113,20 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
             itemRecyclerView = itemView.findViewById(R.id.itemRecyclerView);
             btnAddItem = itemView.findViewById(R.id.btnAddItem);
             itemRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+            LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+            itemRecyclerView.setLayoutManager(layoutManager);
+
+            btnAddItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && onAddItemClickListener != null) {
+                        Tier tier = listOfTiers.get(position);
+                        String tierId = tier.getId();
+                        onAddItemClickListener.onAddItemClick(itemView.getContext(), tierId);
+                    }
+                }
+            });
         }
     }
 }

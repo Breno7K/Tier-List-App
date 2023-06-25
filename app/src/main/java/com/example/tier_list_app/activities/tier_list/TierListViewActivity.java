@@ -33,6 +33,8 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
     private String tierListId;
     private TierList tierlist;
 
+    private static final int REGISTRY_TIER_ACTIVITY_REQUEST_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +56,19 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
                 Intent intent = new Intent(TierListViewActivity.this, RegistryTierActivity.class);
                 intent.putExtra("chave_tier_list_id", tierListId);
                 intent.putExtra("chave_usuario", username);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, REGISTRY_TIER_ACTIVITY_REQUEST_CODE);
             }
         });
 
         updateTierListUI();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REGISTRY_TIER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            updateTierListUI();
+        }
     }
 
     private interface OnTierListLoadedListener {
@@ -126,6 +136,7 @@ public class TierListViewActivity extends AppCompatActivity implements ItemListA
 
 
 
+    @Override
     public void onAddItemClick(Context context, String tierId) {
         Intent intent = new Intent(TierListViewActivity.this, RegistryItemActivity.class);
         intent.putExtra("chave_tier_list_id", tierListId);
