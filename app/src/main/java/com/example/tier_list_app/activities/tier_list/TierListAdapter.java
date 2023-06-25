@@ -94,14 +94,6 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
         notifyDataSetChanged();
     }
 
-    // Retrieve the updated tier list based on your application's logic
-    private List<Tier> retrieveUpdatedTierList() {
-        // Replace this with your own logic to fetch the updated tier list
-        // For example, you could query a database or update a local data source
-        // Return the updated tier list
-        return new ArrayList<>();
-    }
-
     public class TierViewHolder extends RecyclerView.ViewHolder {
         public View btnAddItem;
         TextView tierNameTextView;

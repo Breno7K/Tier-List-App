@@ -110,7 +110,7 @@ public class RegistryTierActivity extends AppCompatActivity {
         tier.setTierlistId(tierListId);
 
         Map<String, Object> tierData = new HashMap<>();
-        tierData.put("id", tier.getId()); // Include the ID in the data map
+        tierData.put("id", tier.getId());
         tierData.put("name", tier.getName());
         tierData.put("color", tier.getColor());
         tierData.put("tierListId",tier.getTierlistId());

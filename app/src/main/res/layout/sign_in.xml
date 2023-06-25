@@ -11,7 +11,7 @@
         android:id="@+id/edtUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Usuário"
+        android:hint="Email"
         android:inputType="textPersonName" />
     <EditText android:id="@+id/edtSenha"
         android:layout_width="match_parent"
