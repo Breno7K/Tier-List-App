@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tier_list_app.R;
 import com.example.tier_list_app.model.Item;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +42,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         LayoutInflater inflater = LayoutInflater.from(context);
         View itemView = inflater.inflate(R.layout.tier_item, parent, false);
         return new ItemViewHolder(itemView);
-
     }
-
-
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -65,22 +64,21 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-
     @Override
     public int getItemCount() {
-        return itemList.size() + 1;
+        int itemCount = itemList.size();
+        return itemList.isEmpty() ? 0 : itemCount;
     }
-
     private static class ItemViewHolder extends RecyclerView.ViewHolder {
-        TextView itemNameTextView;
+        ImageView itemImageView;
 
         ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
+            itemImageView = itemView.findViewById(R.id.itemImageView);
         }
 
         void bind(Item item) {
-            itemNameTextView.setText(item.getName());
+            Picasso.get().load(item.getImageUrl()).into(itemImageView);
         }
     }
 

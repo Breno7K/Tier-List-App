@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class User implements Serializable{
 
     String name, email, username, password;
-    private ArrayList<TierList> tierLists;
     String id;
 
     public String getId() { return id; }
@@ -30,14 +29,6 @@ public class User implements Serializable{
     }
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public ArrayList<TierList> getTierLists() {
-        return tierLists;
-    }
-
-    public void setTierLists(ArrayList<TierList> tierLists) {
-        this.tierLists = tierLists;
     }
 
 

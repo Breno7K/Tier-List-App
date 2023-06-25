@@ -18,6 +18,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -113,6 +114,7 @@ public class RegistryTierActivity extends AppCompatActivity {
         tierData.put("name", tier.getName());
         tierData.put("color", tier.getColor());
         tierData.put("tierListId",tier.getTierlistId());
+        tierData.put("createdAt",new Date());
 
         tierDocument.set(tierData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

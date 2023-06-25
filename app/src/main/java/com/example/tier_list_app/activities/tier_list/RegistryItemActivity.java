@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -114,7 +115,6 @@ public class RegistryItemActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri downloadUri) {
                                 String imageUrl = downloadUri.toString();
-
                                 Item item = new Item(itemId, name, tierId, imageUrl);
 
                                 Map<String, Object> itemData = new HashMap<>();
@@ -122,6 +122,7 @@ public class RegistryItemActivity extends AppCompatActivity {
                                 itemData.put("name", name);
                                 itemData.put("tierId", tierId);
                                 itemData.put("imageUrl", imageUrl);
+                                itemData.put("createdAt", new Date());
 
                                 itemsRef.document(itemId)
                                         .set(itemData)
@@ -129,6 +130,8 @@ public class RegistryItemActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Toast.makeText(RegistryItemActivity.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
+                                                Intent resultIntent = new Intent();
+                                                setResult(Activity.RESULT_OK, resultIntent);
                                                 finish();
                                             }
                                         })
@@ -149,6 +152,7 @@ public class RegistryItemActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     private void imageChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);

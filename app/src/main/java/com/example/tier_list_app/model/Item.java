@@ -1,23 +1,26 @@
 package com.example.tier_list_app.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Item implements Serializable {
 
     private String id;
     private String name;
     private String tierId;
-    private String urlItem;
+    private String imageUrl;
+
+    private Date createdAt;
+
 
     public Item() {
-        // Default constructor required for Firestore
     }
 
-    public Item(String id, String name, String tierId, String urlItem) {
+    public Item(String id, String name, String tierId, String imageUrl) {
         this.id = id;
         this.name = name;
         this.tierId = tierId;
-        this.urlItem = urlItem;
+        this.imageUrl = imageUrl;
     }
 
     public String getId() {
@@ -44,11 +47,19 @@ public class Item implements Serializable {
         this.tierId = tierId;
     }
 
-    public String getUrlItem() {
-        return urlItem;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setUrlItem(String urlItem) {
-        this.urlItem = urlItem;
+    public void setImageUrl(String urlItem) {
+        this.imageUrl = urlItem;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }
