@@ -48,7 +48,7 @@ public class RegistryTierActivity extends AppCompatActivity {
             }
         });
 
-        firestore = FirebaseFirestore.getInstance(); // Initialize FirebaseFirestore
+        firestore = FirebaseFirestore.getInstance();
 
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +88,7 @@ public class RegistryTierActivity extends AppCompatActivity {
         String name = edtName.getText().toString().trim();
         Tier tier = new Tier();
         tier.setName(name);
-        tier.setColor(String.format("#%06X", (0xFFFFFF & selectedColor))); // Set the selected color
+        tier.setColor(String.format("#%06X", (0xFFFFFF & selectedColor)));
 
         insereTier(tierListId, tier);
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tier_list_app.R;
+import com.example.tier_list_app.activities.tier_list.ItemListAdapter;
 import com.example.tier_list_app.model.Item;
 import com.example.tier_list_app.model.Tier;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,11 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierViewHolder> {
-    private List<Tier> tierList;
+    private List<Tier> listOfTiers;
     private ItemListAdapter.OnAddItemClickListener onAddItemClickListener;
 
     public TierListAdapter(List<Tier> tierList, ItemListAdapter.OnAddItemClickListener onAddItemClickListener) {
-        this.tierList = tierList != null ? tierList : new ArrayList<>();
+        this.listOfTiers = tierList != null ? tierList : new ArrayList<>();
         this.onAddItemClickListener = onAddItemClickListener;
     }
 
@@ -40,7 +41,7 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
 
     @Override
     public void onBindViewHolder(@NonNull TierViewHolder holder, int position) {
-        Tier tier = tierList.get(position);
+        Tier tier = listOfTiers.get(position);
         String tierId = tier.getId();
 
         holder.tierNameTextView.setText(tier.getName());
@@ -57,8 +58,6 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
                                 Item item = document.toObject(Item.class);
                                 itemList.add(item);
                             }
-
-                            // Check if the bound tier still matches the current tier ID
                             if (tier.getId().equals(tierId)) {
                                 ItemListAdapter itemListAdapter = new ItemListAdapter(itemList, onAddItemClickListener, tierId);
                                 holder.itemRecyclerView.setAdapter(itemListAdapter);
@@ -68,31 +67,17 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
                         }
                     }
                 });
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        holder.itemRecyclerView.setLayoutManager(layoutManager);
-
-        holder.btnAddItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onAddItemClickListener != null) {
-                    onAddItemClickListener.onAddItemClick(holder.itemView.getContext(), tierId);
-                }
-            }
-        });
     }
-
-
 
     @Override
     public int getItemCount() {
-        return tierList.size();
+        return listOfTiers.size();
     }
 
     public void updateTierList(List<Tier> updatedTierList) {
-        tierList.clear();
+        listOfTiers.clear();
         if (updatedTierList != null) {
-            tierList.addAll(updatedTierList);
+            listOfTiers.addAll(updatedTierList);
         }
         notifyDataSetChanged();
     }
@@ -107,6 +92,7 @@ public class TierListAdapter extends RecyclerView.Adapter<TierListAdapter.TierVi
             tierNameTextView = itemView.findViewById(R.id.tierNameTextView);
             itemRecyclerView = itemView.findViewById(R.id.itemRecyclerView);
             btnAddItem = itemView.findViewById(R.id.btnAddItem);
+            itemRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
         }
     }
 }
