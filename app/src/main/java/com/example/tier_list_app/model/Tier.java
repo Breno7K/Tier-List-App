@@ -32,14 +32,6 @@ public class Tier {
         this.name = name;
     }
 
-    public ArrayList<Item> getItens() {
-        return itens;
-    }
-
-    public void setItens(ArrayList<Item> itens) {
-        this.itens = itens;
-    }
-
     public String getColor(){
         return this.color;
     }
